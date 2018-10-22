@@ -6,19 +6,19 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 class QuestionController(
-        val questionService: QuestionService
+    val questionService: QuestionService
 ) {
     @GetMapping("/question/{id}")
     fun select(@PathVariable id: Int): QuestionResponse =
         questionService.find(id)?.toResponse() ?: dummy(1)
 
     data class QuestionResponse(
-            val title: String,
-            val content: String
+        val title: String,
+        val content: String
     )
 
     fun Question.toResponse(): QuestionResponse = QuestionResponse(this.title, this.content)
 
     private fun dummy(id: Int): QuestionResponse =
-            QuestionResponse("hoge", "fuga")
+        QuestionResponse("hoge", "fuga")
 }

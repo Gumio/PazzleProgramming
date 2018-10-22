@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class QuestionService(
-        val questionRepository: QuestionRepository
+    val questionRepository: QuestionRepository
 ) {
     fun find(id: Int): Question? =
         questionRepository.findOneById(id)?.let {

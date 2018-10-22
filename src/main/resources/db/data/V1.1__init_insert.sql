@@ -1,9 +1,10 @@
 INSERT INTO Question (
-  id,
-  title,
-  content
+id,
+title,
+content
 ) VALUES (
-  1,
-  "FizzBuzz",
-  "こういう問題ない内容です"
+1,
+"FizzBuzz",
+"こういう問題内容です"
 )
+

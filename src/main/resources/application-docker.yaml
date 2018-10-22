@@ -1,0 +1,6 @@
+spring:
+  profiles: docker
+  datasource:
+      url: jdbc:mysql://127.0.0.1:3306/pazprodb
+      username: user
+      password: pass

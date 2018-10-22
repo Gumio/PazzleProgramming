@@ -16,16 +16,16 @@ class Swagger2Config {
     @Bean
     fun swaggerSpringMvcPlugin(): Docket {
         return Docket(DocumentationType.SWAGGER_2)
-                .select()
-                .apis(RequestHandlerSelectors.basePackage("com.kcg.project.pazpro.controller"))
-                .build()
-                .apiInfo(apiInfo())
+            .select()
+            .apis(RequestHandlerSelectors.basePackage("com.kcg.project.pazpro.controller"))
+            .build()
+            .apiInfo(apiInfo())
     }
 
     private fun apiInfo(): ApiInfo {
         return ApiInfoBuilder()
-                .title("Pazpro API")
-                .version("1.0")
-                .build()
+            .title("Pazpro API")
+            .version("1.0")
+            .build()
     }
 }
