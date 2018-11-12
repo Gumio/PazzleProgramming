@@ -8,8 +8,11 @@ import org.springframework.stereotype.Service
 class QuestionService(
     val questionRepository: QuestionRepository
 ) {
-    fun find(id: Int): Question? =
-        questionRepository.findOneById(id)?.let {
+    fun find(type: Int): Question? =
+        questionRepository.findOneById(type)?.let {
             it
         }
+
+    fun findAll(): List<Question?> =
+        questionRepository.find()
 }

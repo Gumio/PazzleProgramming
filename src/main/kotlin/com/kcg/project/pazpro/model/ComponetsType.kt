@@ -5,5 +5,5 @@ enum class ComponentsType(val id: Int) {
     LITERAL(1),
     IF(2),
     PRINT(3),
-    WHILE(4)
+    WHILE(4);
 }

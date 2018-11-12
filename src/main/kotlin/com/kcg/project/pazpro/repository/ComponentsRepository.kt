@@ -11,16 +11,16 @@ import org.springframework.stereotype.Repository
 interface ComponentsRepository: ComponentsMapper {
     @Select(
         """
-                SELECT type, name
+                SELECT id, type, name
                 FROM Components
-                WHERE id=#{id}
+                WHERE type=#{type}
             """
     )
-    override fun findOneById(id: Int): Components?
+    override fun findOneByType(type: Int): Components?
 
     @Select(
         """
-                SELECT title, content
+                SELECT id, type, name
                 FROM Components
             """
     )
