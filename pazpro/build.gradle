@@ -25,6 +25,11 @@ group = 'com.kcg.project'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
 
+bootJar {
+    baseName = 'pazpro'
+    version = '0.0.1-SNAPSHOT'
+}
+
 compileKotlin {
     kotlinOptions {
         freeCompilerArgs = ["-Xjsr305=strict"]

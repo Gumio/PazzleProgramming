@@ -9,10 +9,12 @@ import org.springframework.web.bind.annotation.*
 class QuestionController(
     val questionService: QuestionService
 ) {
+    @CrossOrigin
     @GetMapping("")
     fun find(): List<Question?> =
         questionService.findAll()
 
+    @CrossOrigin
     @GetMapping("/{id}")
     fun select(@PathVariable id: Int): QuestionResponse =
         questionService.find(id)?.toResponse() ?: dummy(1)
