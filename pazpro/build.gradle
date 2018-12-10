@@ -61,6 +61,6 @@ dependencies {
     runtimeOnly('mysql:mysql-connector-java')
     testImplementation('org.springframework.boot:spring-boot-starter-test')
 
-    // parsing
+    // com.kcg.project.pazpro.parsing
     implementation("com.github.h0tk3y.betterParse:better-parse-jvm:0.4.0-alpha-3")
 }

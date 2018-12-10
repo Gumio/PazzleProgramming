@@ -12,11 +12,13 @@ data class CompStatement(val expressions: List<AST>) : AST() {
 
 data class FunctionDeclaration(val name: String, val parameters: List<AST>) : AST()
 
-data class FunctionCall(val functionDeclaration: FunctionDeclaration, val arguments: List<AST>) : AST() {
-    init {
-        require(functionDeclaration.parameters.size == arguments.size)
-    }
-}
+//data class FunctionCall(val functionDeclaration: FunctionDeclaration, val arguments: List<AST>) : AST() {
+//    init {
+//        require(functionDeclaration.parameters.size == arguments.size)
+//    }
+//}
+
+data class FunctionCall(val name: String, val parameters: List<AST>) : AST()
 
 data class Return(val expr: AST) : AST()
 

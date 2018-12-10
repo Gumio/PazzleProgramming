@@ -1,4 +1,4 @@
-package parsing
+package com.kcg.project.pazpro.parsing
 
 import com.github.h0tk3y.betterParse.combinators.*
 import com.github.h0tk3y.betterParse.grammar.Grammar
@@ -144,7 +144,7 @@ object RubySyntaxChecker : Grammar<Any>() {
 
     private val arrayLiteral by -LSQ * separatedTerms(parser(::expr), COMMA, acceptZero = true) * -RSQ map { ArrayLiteral(it) }
 
-    private val literal by stringLiteral or numLiteral or boolLiteral
+    private val literal by stringLiteral or numLiteral or boolLiteral or arrayLiteral
 
     // Unary
     private val not by -NOT * parser(::primary) map { UnaryOperation(it, Not) }
@@ -210,6 +210,24 @@ object RubySyntaxChecker : Grammar<Any>() {
 
     private val assignment by simpleAssignment or plusAssignment
 
+    // functions
+    private val args by separatedTerms(parser(::expr), COMMA, acceptZero = true) //map {
+//        (f, s) ->
+//        val args = listOf(f)
+//        if (s != null) {
+//            args.plus(s)
+//        }
+//        args
+//    }
+//    private val functionDeclaration by
+    private val functionCall by varName * optional(-LPAR * args * -RPAR) map {
+        (name, args) ->
+        if (args != null)
+            FunctionCall(name.text, args)
+        else
+            FunctionCall(name.text, emptyList())
+    }
+
     // Expressions
     // if <expr> then <stmt> else <stmt>
     private val ifExpression by -IF * parser(::expr) * -then * parser(::compStmt) *
@@ -237,6 +255,7 @@ object RubySyntaxChecker : Grammar<Any>() {
     // expressions
     private val parenExpr by -LPAR * parser(::compStmt) * -RPAR
     private val primary: Parser<AST> by parenExpr or
+            functionCall or
             returnExpression or
             assignment or
             ifExpression or
