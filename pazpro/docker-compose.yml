@@ -5,6 +5,8 @@ services:
         volumes:
             - ./sql:/docker-entrypoint-initdb.d
             - mysql-db:/var/lib/mysql
+        networks:
+              - mt-network
         environment:
             MYSQL_DATABASE: pazprodb
             MYSQL_USER: user
@@ -16,16 +18,21 @@ services:
 
     app:
         build: .
-        image: gumio/pazpro:0.0.1
+        image: pazpro:latest
         depends_on:
             - dbserver
+        networks:
+              - mt-network
         ports:
             - "8080:8080"
         volumes:
             - .:/app
         environment:
-            JAR_TARGET: pazpro-0.0.1-SNAPSHOT.jar
-
+            JAR_TARGET: pazpro.jar
 volumes:
     mysql-db:
         driver: local
+
+networks:
+  mt-network:
+    driver: bridge
