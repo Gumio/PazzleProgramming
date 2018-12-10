@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        kotlinVersion = '1.2.51'
+        kotlinVersion = '1.2.71'
         springBootVersion = '2.0.5.RELEASE'
     }
     repositories {
@@ -22,6 +22,7 @@ apply plugin: 'io.spring.dependency-management'
 group = 'com.kcg.project'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
+
 compileKotlin {
     kotlinOptions {
         freeCompilerArgs = ["-Xjsr305=strict"]
@@ -38,7 +39,6 @@ compileTestKotlin {
 repositories {
     mavenCentral()
 }
-
 
 dependencies {
     // Spring

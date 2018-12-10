@@ -1,0 +1,31 @@
+version: "3"
+services:
+    dbserver:
+        image: mysql:5.6
+        volumes:
+            - ./sql:/docker-entrypoint-initdb.d
+            - mysql-db:/var/lib/mysql
+        environment:
+            MYSQL_DATABASE: pazprodb
+            MYSQL_USER: user
+            MYSQL_PASSWORD: pass
+            MYSQL_ROOT_PASSWORD: root
+        ports:
+            - "3306:3306"
+        command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci
+
+    app:
+        build: .
+        image: gumio/pazpro:0.0.1
+        depends_on:
+            - dbserver
+        ports:
+            - "8080:8080"
+        volumes:
+            - .:/app
+        environment:
+            JAR_TARGET: pazpro-0.0.1-SNAPSHOT.jar
+
+volumes:
+    mysql-db:
+        driver: local
