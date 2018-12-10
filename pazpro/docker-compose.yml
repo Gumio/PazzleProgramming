@@ -24,7 +24,7 @@ services:
         networks:
               - mt-network
         ports:
-            - "8080:8080"
+            - "4649:4649"
         volumes:
             - .:/app
         environment:
