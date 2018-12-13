@@ -207,8 +207,9 @@ object RubySyntaxChecker : Grammar<Any>() {
 
     private val simpleAssignment by variable * -ASGN * parser(::expr) map { (v, value) -> SimpleAssignment(v, value) }
     private val plusAssignment by variable * -PASGN * parser(::expr) map { (v, value) -> PlusAssignment(v, value) }
+    private val arrayAssignment by variable * -LSQ * literal * -RSQ * parser(::expr) map { (v, key, value) -> ArrayAssignment(v, key, value) }
 
-    private val assignment by simpleAssignment or plusAssignment
+    private val assignment by simpleAssignment or plusAssignment or arrayAssignment
 
     // functions
     private val args by separatedTerms(parser(::expr), COMMA, acceptZero = true) //map {

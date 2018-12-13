@@ -61,6 +61,11 @@ dependencies {
     runtimeOnly('mysql:mysql-connector-java')
     testImplementation('org.springframework.boot:spring-boot-starter-test')
 
-    // com.kcg.project.pazpro.parsing
+    // parsing
     implementation("com.github.h0tk3y.betterParse:better-parse-jvm:0.4.0-alpha-3")
+
+    // DockerAPI
+    implementation(group: 'com.spotify', name: 'docker-client', version: '8.14.4')
+    implementation(group: 'org.glassfish.jersey.inject', name: 'jersey-hk2', version: '2.26', scope: 'test')
+    implementation(group: 'org.glassfish.jersey.bundles.repackaged', name: 'jersey-guava', version: '2.25.1', scope: 'test')
 }

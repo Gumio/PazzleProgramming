@@ -1,7 +1,7 @@
 package com.kcg.project.pazpro
 
 import com.github.h0tk3y.betterParse.grammar.parseToEnd
-import com.kcg.project.pazpro.parsing.RubySyntaxChecker
+import com.kcg.project.pazpro.parsing.*
 
 fun main(args: Array<String>) {
     TestCase.test02()
