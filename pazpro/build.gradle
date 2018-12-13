@@ -16,7 +16,6 @@ buildscript {
 
 apply plugin: 'kotlin'
 apply plugin: 'kotlin-spring'
-apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 apply plugin: 'docker'
@@ -45,6 +44,7 @@ compileTestKotlin {
 
 repositories {
     mavenCentral()
+    maven { setUrl("https://dl.bintray.com/hotkeytlt/maven") }
 }
 
 dependencies {
@@ -60,6 +60,12 @@ dependencies {
     // DB
     implementation('org.flywaydb:flyway-core')
     implementation('org.mybatis.spring.boot:mybatis-spring-boot-starter:1.3.2')
+
+    // com.kcg.project.pazpro.parsing
+    implementation("com.github.h0tk3y.betterParse:better-parse-jvm:0.4.0-alpha-3")
+
+    // Docker
+    implementation('com.spotify:docker-client:8.14.4')
 
     // kotlin
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
