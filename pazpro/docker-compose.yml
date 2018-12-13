@@ -28,7 +28,7 @@ services:
         volumes:
             - .:/app
         environment:
-            JAR_TARGET: pazpro.jar
+            JAR_TARGET: pazpro-0.0.1-SNAPSHOT.jar
 volumes:
     mysql-db:
         driver: local
