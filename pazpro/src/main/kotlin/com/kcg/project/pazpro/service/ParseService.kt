@@ -5,7 +5,10 @@ import com.kcg.project.pazpro.parsing.RubySyntaxChecker
 import org.springframework.stereotype.Service
 
 @Service
-class ExecuteService {
-    fun tryExecute(code: String): String = parsing(code)
-    private fun parsing(code: String): String = RubySyntaxChecker.parseToEnd(code).toString()
+class ParseService {
+    fun parsing(code: String): String {
+        val result = RubySyntaxChecker.parseToEnd(code).toString()
+        println(result)
+        return result
+    }
 }

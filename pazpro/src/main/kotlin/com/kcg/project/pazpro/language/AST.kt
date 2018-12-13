@@ -70,6 +70,7 @@ data class ArrayLiteral(val value: List<AST>) : AST()
 sealed class Assignment(id: AST, value: AST) : AST()
 data class SimpleAssignment(val id: AST, val value: AST) : Assignment(id, value)
 data class PlusAssignment(val id: AST, val value: AST) : Assignment(id, value)
+data class ArrayAssignment(val id: AST, val index: AST, val value: AST) : Assignment(id, value)
 
 
 data class UnaryOperation(val operand: AST, val kind: UnaryOperationKind) : AST()
