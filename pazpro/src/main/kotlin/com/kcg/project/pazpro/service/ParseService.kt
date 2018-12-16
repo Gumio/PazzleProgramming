@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service
 class ParseService {
     fun parsing(code: String): String {
         val result = RubySyntaxChecker.parseToEnd(code).toString()
-        println(result)
+        println("parse result -> $result")
         return result
     }
 }
