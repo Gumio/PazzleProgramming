@@ -142,11 +142,13 @@ object RubySyntaxChecker : Grammar<Any>() {
     private val boolLiteral by (TRUE or FALSE) use { BooleanLiteral(text == "true") }
 //    private val symbolLiteral by -CORON * parser(::varName)
 
-    private val arrayLiteral by -LSQ * separatedTerms(parser(::expr), COMMA, acceptZero = true) * -RSQ map { ArrayLiteral(it) }
+    private val arrayLiteral by -LSQ * separatedTerms(parser(RubySyntaxChecker::expr),
+        COMMA, acceptZero = true) * -RSQ map { ArrayLiteral(it) }
+
     private val literal by stringLiteral or numLiteral or boolLiteral or arrayLiteral
 
     // Unary
-    private val not by -NOT * parser(::primary) map { UnaryOperation(it, Not) }
+    private val not by -NOT * parser(RubySyntaxChecker::primary) map { UnaryOperation(it, Not) }
 
     /**
      * Binary
@@ -252,7 +254,8 @@ object RubySyntaxChecker : Grammar<Any>() {
 //    }
 //    private val functionDeclaration by
     private val functionCall by varName * optional(-LPAR * args * -RPAR) map {
-            (name, args) -> if (args != null)
+            (name, args) ->
+        if (args != null)
             FunctionCall(name.text, args)
         else
             FunctionCall(name.text, emptyList())
@@ -273,7 +276,6 @@ object RubySyntaxChecker : Grammar<Any>() {
         }
         IfExpression(ifCond, ifBody, elses)
     }
-
     // TODO: 要確認
     private val unlessExpression by -UNLESS * parser(RubySyntaxChecker::expr) * -then * parser(
         RubySyntaxChecker::compStmt
