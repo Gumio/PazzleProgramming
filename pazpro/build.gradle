@@ -10,6 +10,7 @@ buildscript {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}")
         classpath("org.jetbrains.kotlin:kotlin-allopen:${kotlinVersion}")
+        classpath('se.transmode.gradle:gradle-docker:1.2')
     }
 }
 
@@ -17,10 +18,16 @@ apply plugin: 'kotlin'
 apply plugin: 'kotlin-spring'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
+apply plugin: 'docker'
 
 group = 'com.kcg.project'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
+
+bootJar {
+    baseName = 'pazpro'
+    version = '0.0.1-SNAPSHOT'
+}
 
 compileKotlin {
     kotlinOptions {
@@ -47,25 +54,45 @@ dependencies {
     implementation('io.springfox:springfox-swagger-ui:2.8.0')
     implementation('io.springfox:springfox-core:2.8.0')
 
-    // jackson
+    // Jackson
     implementation('com.fasterxml.jackson.module:jackson-module-kotlin')
 
     // DB
     implementation('org.flywaydb:flyway-core')
     implementation('org.mybatis.spring.boot:mybatis-spring-boot-starter:1.3.2')
 
-    // kotlin
+    // Parsing
+    implementation("com.github.h0tk3y.betterParse:better-parse-jvm:0.4.0-alpha-3")
+
+    // DockerAPI
+    implementation('com.spotify:docker-client:8.14.4')
+    implementation('org.glassfish.jersey.inject:jersey-hk2:2.26')
+    implementation('org.glassfish.jersey.bundles.repackaged:jersey-guava:2.25')
+
+    // Kotlin
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     runtimeOnly('org.springframework.boot:spring-boot-devtools')
     runtimeOnly('mysql:mysql-connector-java')
     testImplementation('org.springframework.boot:spring-boot-starter-test')
 
-    // parsing
+    // Parsing
     implementation("com.github.h0tk3y.betterParse:better-parse-jvm:0.4.0-alpha-3")
 
     // DockerAPI
     implementation(group: 'com.spotify', name: 'docker-client', version: '8.14.4')
     implementation(group: 'org.glassfish.jersey.inject', name: 'jersey-hk2', version: '2.26', scope: 'test')
     implementation(group: 'org.glassfish.jersey.bundles.repackaged', name: 'jersey-guava', version: '2.25.1', scope: 'test')
+}
+
+task buildDocker(type: Docker, dependsOn: build) {
+    push = true
+    applicationName = bootJar.baseName
+    dockerfile = file('Dockerfile')
+    doFirst {
+        copy {
+            from jar
+            into stageDir
+        }
+    }
 }

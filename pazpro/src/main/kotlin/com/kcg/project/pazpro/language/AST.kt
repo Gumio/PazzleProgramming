@@ -114,5 +114,3 @@ object BitOr : BinaryOperationKind()
 
 object Range2 : BinaryOperationKind()
 object Range3 : BinaryOperationKind()
-
-

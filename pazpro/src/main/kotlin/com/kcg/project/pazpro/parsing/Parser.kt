@@ -104,30 +104,30 @@ object RubySyntaxChecker : Grammar<Any>() {
     private val SCORPOP by token("::")
 
     private val operator = mapOf(
-            PLUS to Plus,
-            MINUS to Minus,
-            TIMES to Times,
-            DIV to Div,
-            MOD to Mod,
-            AND to And,
-            OR to Or,
-            EQU to Eq,
-            NEQ to Neq,
-            GT to Gt,
-            LT to Lt,
-            LEQ to Leq,
-            GEQ to Geq,
-            RANGE2 to Range2,
-            RANGE3 to Range3,
-            EXPO to Exponent,
-            SPACESHIP to SpaceShip,
-            CASEEQU to CaseEq,
-            MATCH to Match,
-            NOTMATCH to NotMatch,
-            RS to Rs,
-            LS to Ls,
-            BITAND to BitAnd,
-            BITOR to BitOr
+        PLUS to Plus,
+        MINUS to Minus,
+        TIMES to Times,
+        DIV to Div,
+        MOD to Mod,
+        AND to And,
+        OR to Or,
+        EQU to Eq,
+        NEQ to Neq,
+        GT to Gt,
+        LT to Lt,
+        LEQ to Leq,
+        GEQ to Geq,
+        RANGE2 to Range2,
+        RANGE3 to Range3,
+        EXPO to Exponent,
+        SPACESHIP to SpaceShip,
+        CASEEQU to CaseEq,
+        MATCH to Match,
+        NOTMATCH to NotMatch,
+        RS to Rs,
+        LS to Ls,
+        BITAND to BitAnd,
+        BITOR to BitOr
     )
 
     // Separator
@@ -143,7 +143,6 @@ object RubySyntaxChecker : Grammar<Any>() {
 //    private val symbolLiteral by -CORON * parser(::varName)
 
     private val arrayLiteral by -LSQ * separatedTerms(parser(::expr), COMMA, acceptZero = true) * -RSQ map { ArrayLiteral(it) }
-
     private val literal by stringLiteral or numLiteral or boolLiteral or arrayLiteral
 
     // Unary
@@ -164,40 +163,71 @@ object RubySyntaxChecker : Grammar<Any>() {
     比較       <=> ==  === !=  =~  !~
      */
     private val multiplicationOperator by TIMES or DIV or MOD
-    private val multiplicationOrExpr by leftAssociative(parser(::primary), multiplicationOperator) { l, o, r -> BinaryOperation(l, r, operator[o.type]!!) }
+    private val multiplicationOrExpr by leftAssociative(parser(RubySyntaxChecker::primary),
+        multiplicationOperator
+    ) { l, o, r -> BinaryOperation(l, r, operator[o.type]!!) }
 
     private val sumOperator by PLUS or MINUS
-    private val math by leftAssociative(multiplicationOrExpr, sumOperator) { l, o, r -> BinaryOperation(l, r, operator[o.type]!!) }
+    private val math by leftAssociative(
+        multiplicationOrExpr,
+        sumOperator
+    ) { l, o, r -> BinaryOperation(l, r, operator[o.type]!!) }
 
     // >> <<
     private val shiftOperator by RS or LS
-    private val shiftChain by leftAssociative(math, shiftOperator) { l, o, r -> BinaryOperation(l, r, operator[o.type]!!) }
+    private val shiftChain by leftAssociative(
+        math,
+        shiftOperator
+    ) { l, o, r -> BinaryOperation(l, r, operator[o.type]!!) }
 
     // &
     private val bitAndOperator by BITAND
-    private val bitAndChain by leftAssociative(shiftChain, bitAndOperator) { l, o, r -> BinaryOperation(l, r, operator[o.type]!!) }
+    private val bitAndChain by leftAssociative(
+        shiftChain,
+        bitAndOperator
+    ) { l, o, r -> BinaryOperation(l, r, operator[o.type]!!) }
     // ^ |
     private val bitOrOperator by BITOR
-    private val bitOrChain by leftAssociative(bitAndChain, bitOrOperator) { l, o, r -> BinaryOperation(l, r, operator[o.type]!!) }
+    private val bitOrChain by leftAssociative(
+        bitAndChain,
+        bitOrOperator
+    ) { l, o, r -> BinaryOperation(l, r, operator[o.type]!!) }
 
     // <= < > >=
     private val comparisonOperator by LEQ or LT or GT or GEQ
     //    private val comparisonOrMath by (math * optional(comparisonOperator * math))
 //            .map { (left, tail) -> tail?.let { (op, r) -> BinaryOperation(left, r, operator[op.type]!!) } ?: left }
-    private val comparisonChain by leftAssociative(bitOrChain, comparisonOperator) { l, o, r -> BinaryOperation(l, r, operator[o.type]!!) }
+    private val comparisonChain by leftAssociative(
+        bitOrChain,
+        comparisonOperator
+    ) { l, o, r -> BinaryOperation(l, r, operator[o.type]!!) }
 
     // <=> == === != =~ !~
     private val equalityAndPatternOperator by SPACESHIP or EQU or CASEEQU or NEQ or MATCH or NOTMATCH
-    private val equalityAndPatternChain by leftAssociative(comparisonChain, equalityAndPatternOperator) { l, o, r -> BinaryOperation(l, r, operator[o.type]!!)}
+    private val equalityAndPatternChain by leftAssociative(
+        comparisonChain,
+        equalityAndPatternOperator
+    ) { l, o, r -> BinaryOperation(l, r, operator[o.type]!!)}
 
-    private val andChain by leftAssociative(equalityAndPatternChain, AND) { l, _, r  -> BinaryOperation(l, r, And)}
-    private val orChain by leftAssociative(andChain, OR) { l, _, r  -> BinaryOperation(l, r, Or) }
+    private val andChain by leftAssociative(
+        equalityAndPatternChain,
+        AND
+    ) { l, _, r  -> BinaryOperation(l, r, And)}
+    private val orChain by leftAssociative(
+        andChain,
+        OR
+    ) { l, _, r  -> BinaryOperation(l, r, Or) }
 
     private val rangeOperator by RANGE3 or RANGE2
-    private val rangeChain by leftAssociative(orChain, rangeOperator) { l, o, r -> BinaryOperation(l, r, operator[o.type]!!) }
+    private val rangeChain by leftAssociative(
+        orChain,
+        rangeOperator
+    ) { l, o, r -> BinaryOperation(l, r, operator[o.type]!!) }
 
     // Ternary Operator
-    private val ternaryOperation by parser(::primary) * -TERNARY * parser(::primary) * -CORON * parser(::primary) map { (cond, ifB, elB) -> IfExpression(cond, ifB, elB) }
+    private val ternaryOperation by parser(RubySyntaxChecker::primary) * -TERNARY * parser(
+        RubySyntaxChecker::primary
+    ) * -CORON * parser(RubySyntaxChecker::primary) map { (cond, ifB, elB) -> IfExpression(cond, ifB, elB) }
 
     // assignment
     private val global by -GLOBAL * ID              // $varName
@@ -205,15 +235,15 @@ object RubySyntaxChecker : Grammar<Any>() {
     private val varName by ID or global or instanceVar
     private val variable by varName use { Variable(text) } //　or NIL or SELF
 
-    private val simpleAssignment by variable * -ASGN * parser(::expr) map { (v, value) -> SimpleAssignment(v, value) }
-    private val plusAssignment by variable * -PASGN * parser(::expr) map { (v, value) -> PlusAssignment(v, value) }
+    private val simpleAssignment by variable * -ASGN * parser(RubySyntaxChecker::expr) map { (v, value) -> SimpleAssignment(v, value) }
+    private val plusAssignment by variable * -PASGN * parser(RubySyntaxChecker::expr) map { (v, value) -> PlusAssignment(v, value) }
     private val arrayAssignment by variable * -LSQ * literal * -RSQ * parser(::expr) map { (v, key, value) -> ArrayAssignment(v, key, value) }
 
     private val assignment by simpleAssignment or plusAssignment or arrayAssignment
-
     // functions
-    private val args by separatedTerms(parser(::expr), COMMA, acceptZero = true) //map {
-//        (f, s) ->
+    private val args by separatedTerms(parser(RubySyntaxChecker::expr),
+        COMMA, acceptZero = true) //map {
+    //        (f, s) ->
 //        val args = listOf(f)
 //        if (s != null) {
 //            args.plus(s)
@@ -222,8 +252,7 @@ object RubySyntaxChecker : Grammar<Any>() {
 //    }
 //    private val functionDeclaration by
     private val functionCall by varName * optional(-LPAR * args * -RPAR) map {
-        (name, args) ->
-        if (args != null)
+            (name, args) -> if (args != null)
             FunctionCall(name.text, args)
         else
             FunctionCall(name.text, emptyList())
@@ -231,9 +260,13 @@ object RubySyntaxChecker : Grammar<Any>() {
 
     // Expressions
     // if <expr> then <stmt> else <stmt>
-    private val ifExpression by -IF * parser(::expr) * -then * parser(::compStmt) *
-            zeroOrMore(-ELSIF * parser(::expr) * -then * parser(::compStmt)) *
-            optional(-ELSE * parser(::compStmt)).map { it ?: Skip } *
+    private val ifExpression by -IF * parser(RubySyntaxChecker::expr) * -then * parser(
+        RubySyntaxChecker::compStmt
+    ) *
+            zeroOrMore(-ELSIF * parser(RubySyntaxChecker::expr) * -then * parser(
+                RubySyntaxChecker::compStmt
+            )) *
+            optional(-ELSE * parser(RubySyntaxChecker::compStmt)).map { it ?: Skip } *
             -END map { (ifCond, ifBody, elif, elseBody) ->
         val elses = elif.foldRight(elseBody) { (elifC, elifB), el ->
             IfExpression(elifC, elifB, el)
@@ -241,20 +274,27 @@ object RubySyntaxChecker : Grammar<Any>() {
         IfExpression(ifCond, ifBody, elses)
     }
 
-    private val unlessExpression by -UNLESS * parser(::expr) * -then * parser(::compStmt) *
-            optional(-ELSE * parser(::compStmt)).map { it ?: Skip } *
+    // TODO: 要確認
+    private val unlessExpression by -UNLESS * parser(RubySyntaxChecker::expr) * -then * parser(
+        RubySyntaxChecker::compStmt
+    ) *
+            optional(-ELSE * parser(RubySyntaxChecker::compStmt)).map { it ?: Skip } *
             -END map { (unCond, body, elseBody) ->
         IfExpression(UnaryOperation(unCond, Not), body, elseBody)
     }
-    private val whileExpression by (-WHILE * parser(::expr) * -`do` * parser(::compStmt) * -END).map { (cond, body) -> WhileExpression(cond, body) }
-    private val forExpression by (-FOR * variable * -IN * parser(::expr) * -`do` * parser(::compStmt) * -END) map { (v, obj, body) ->
+    private val whileExpression by (-WHILE * parser(RubySyntaxChecker::expr) * -`do` * parser(
+        RubySyntaxChecker::compStmt
+    ) * -END).map { (cond, body) -> WhileExpression(cond, body) }
+    private val forExpression by (-FOR * variable * -IN * parser(
+        RubySyntaxChecker::expr
+    ) * -`do` * parser(RubySyntaxChecker::compStmt) * -END) map { (v, obj, body) ->
         ForExpression(v, obj, body)
     }
-    private val returnExpression by -RETURN * optional(parser(::expr)) map { Return(it ?: Skip) }
-    private val putExpression by -PUT * parser(::expr) map { Put(it) }
+    private val returnExpression by -RETURN * optional(parser(RubySyntaxChecker::expr)) map { Return(it ?: Skip) }
+    private val putExpression by -PUT * parser(RubySyntaxChecker::expr) map { Put(it) }
 
     // expressions
-    private val parenExpr by -LPAR * parser(::compStmt) * -RPAR
+    private val parenExpr by -LPAR * parser(RubySyntaxChecker::compStmt) * -RPAR
     private val primary: Parser<AST> by parenExpr or
             functionCall or
             returnExpression or
@@ -272,8 +312,10 @@ object RubySyntaxChecker : Grammar<Any>() {
 
     private val statement by expr
 
-    private val compStmt by statement * zeroOrMore(-terminator * expr) * -optional(terminator) map {
-        (first, stmts) ->
+    private val compStmt by statement * zeroOrMore(-terminator * expr) * -optional(
+        terminator
+    ) map {
+            (first, stmts) ->
         stmts.fold(first) { f, ast ->
             if (f is CompStatement) {
                 val exprs = f.expressions.toMutableList()

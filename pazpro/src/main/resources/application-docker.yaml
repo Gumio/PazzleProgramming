@@ -1,6 +1,14 @@
 spring:
   profiles: docker
   datasource:
-      url: jdbc:mysql://127.0.0.1:3306/pazprodb
+      url: jdbc:mysql://dbserver:3306/pazprodb
       username: user
       password: pass
+  flyway:
+    datasource:
+      username: user
+      password: pass
+      jdbcUrl: jdbc:mysql://dbserver:3306/pazprodb
+      type: com.zaxxer.hikari.HikariDataSource
+      flyway:
+        locations: classpath:/db/migration
