@@ -33,10 +33,10 @@ object TestCase {
         for hoge in 1...5
             if hoge != 1
                 puts "hoge"
-                hoge(123, [4, 5, 6])
+                something([1, 2, 3])
             end
         end
-        puts "hoge"
+        puts "PUTS TEST"
         """.trimIndent()
 
 //        val treeGrammar = RubySyntaxChecker.liftToSyntaxTreeGrammar()

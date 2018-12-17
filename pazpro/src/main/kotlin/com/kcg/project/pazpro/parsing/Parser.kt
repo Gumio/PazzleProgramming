@@ -240,7 +240,7 @@ object RubySyntaxChecker : Grammar<Any>() {
         }
         IfExpression(ifCond, ifBody, elses)
     }
-    // TODO: 要確認
+
     private val unlessExpression by -UNLESS * parser(::expr) * -then * parser(::compStmt) *
             optional(-ELSE * parser(::compStmt)).map { it ?: Skip } *
             -END map { (unCond, body, elseBody) ->
