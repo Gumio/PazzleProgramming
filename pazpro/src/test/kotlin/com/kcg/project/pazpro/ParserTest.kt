@@ -33,6 +33,10 @@ object TestCase {
         for hoge in 1...5
             if hoge != 1
                 puts "hoge"
+                something([1, 2, 3])
+            end
+        end
+        puts "PUTS TEST"
                 hoge(123, [4, 5, 6])
             end
         end

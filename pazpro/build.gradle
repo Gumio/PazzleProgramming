@@ -69,14 +69,20 @@ dependencies {
     implementation('org.glassfish.jersey.inject:jersey-hk2:2.26')
     implementation('org.glassfish.jersey.bundles.repackaged:jersey-guava:2.25')
 
- //   implementation('com.github.docker-java:docker-java:3.0.14')
-
     // Kotlin
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     runtimeOnly('org.springframework.boot:spring-boot-devtools')
     runtimeOnly('mysql:mysql-connector-java')
     testImplementation('org.springframework.boot:spring-boot-starter-test')
+
+    // Parsing
+    implementation("com.github.h0tk3y.betterParse:better-parse-jvm:0.4.0-alpha-3")
+
+    // DockerAPI
+    implementation(group: 'com.spotify', name: 'docker-client', version: '8.14.4')
+    implementation(group: 'org.glassfish.jersey.inject', name: 'jersey-hk2', version: '2.26', scope: 'test')
+    implementation(group: 'org.glassfish.jersey.bundles.repackaged', name: 'jersey-guava', version: '2.25.1', scope: 'test')
 }
 
 task buildDocker(type: Docker, dependsOn: build) {
