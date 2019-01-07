@@ -1,34 +1,59 @@
 INSERT INTO Question (
-title,
-content
+    title,
+    content,
+    step,
+    args,
+    stdout
 ) VALUES (
-"FizzBuzz",
-"こういう問題内容です"
+    "FizzBuzz",
+    "こういう問題内容です",
+    1,
+    "args01",
+    "output"
 );
 
 INSERT INTO Question (
-  title,
-  content
+    title,
+    content,
+    step,
+    args,
+    stdout
 ) VALUES (
-  "FizzBuzz2",
-  "こういう問題内容です"
+    "FizzBuzz2",
+    "こういう問題内容です",
+    1,
+    "args01",
+    "output"
 );
 
 INSERT INTO Question (
-  title,
-  content
+    title,
+    content,
+    step,
+    args,
+    stdout
 ) VALUES (
-  "FizzBuzz3",
-  "こういう問題内容です"
+    "FizzBuzz3",
+    "こういう問題内容です",
+    1,
+    "args01",
+    "output"
 );
 
 INSERT INTO Question (
-  title,
-  content
+    title,
+    content,
+    step,
+    args,
+    stdout
 ) VALUES (
-  "FizzBuzz4",
-  "こういう問題内容です"
+    "FizzBuzz4",
+    "こういう問題内容です",
+    1,
+    "args01",
+    "output"
 );
+
 
 INSERT INTO Components (
   type,
