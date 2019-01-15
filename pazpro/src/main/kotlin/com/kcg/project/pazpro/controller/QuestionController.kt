@@ -11,8 +11,8 @@ class QuestionController(
 ) {
     @CrossOrigin
     @GetMapping("")
-    fun find(): List<Question?> =
-        questionService.findAll()
+    fun find(): List<QuestionResponse> =
+        questionService.findAll().map { it?.toResponse() ?: dummy(1) }
 
     @CrossOrigin
     @GetMapping("/{id}")
