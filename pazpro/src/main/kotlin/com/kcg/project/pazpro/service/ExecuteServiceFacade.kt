@@ -21,10 +21,10 @@ class ExecuteServiceFacade(
         val out = dockerService.runCode(question!!.args)
         println(out.trim())
         println(question.stdout)
-        if (out.trim() == question.stdout) {
-            return ExecuteController.ExecuteResponse(true, false)
+        return if (out.trim() == question.stdout) {
+            ExecuteController.ExecuteResponse(true, false)
         } else {
-            return ExecuteController.ExecuteResponse(false, false)
+            ExecuteController.ExecuteResponse(false, false)
         }
     }
 

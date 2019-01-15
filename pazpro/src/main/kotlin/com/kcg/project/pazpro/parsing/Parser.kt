@@ -6,7 +6,7 @@ import com.github.h0tk3y.betterParse.grammar.parser
 import com.github.h0tk3y.betterParse.parser.Parser
 import com.kcg.project.pazpro.language.*
 
-object RubySyntaxChecker : Grammar<Any>() {
+object RubySyntaxChecker : Grammar<AST>() {
     private val LPAR by token("\\(")
     private val RPAR by token("\\)")
 
