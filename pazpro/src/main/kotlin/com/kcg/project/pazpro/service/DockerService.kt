@@ -33,9 +33,9 @@ class DockerService {
 //            .exec().toString()
 //    }
 
-    fun runCode(): String {
+    fun runCode(args: String): String {
         val docker = DefaultDockerClient.fromEnv().build()
-        val execCreation = docker.execCreate(CONTAINER_ID, COMMAND,
+        val execCreation = docker.execCreate(CONTAINER_ID, arrayOf(COMMAND[0], COMMAND[1], args),
             DockerClient.ExecCreateParam.attachStdout(),
             DockerClient.ExecCreateParam.attachStderr())
         val out: LogStream = docker.execStart(execCreation.id())
