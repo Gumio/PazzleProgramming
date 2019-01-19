@@ -1,3 +1,4 @@
+/*
 INSERT INTO Question (
     title,
     content,
@@ -94,3 +95,5 @@ INSERT INTO Components (
   4,
   "WHILE"
 );
+
+*/

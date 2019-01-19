@@ -12,7 +12,7 @@ interface QuestionRepository : QuestionMapper {
 
     @Select(
         """
-                SELECT id, title, content, step, args, stdout
+                SELECT id, title, description, content, step, args, stdout
                 FROM Question
                 WHERE id=#{id}
             """
@@ -21,7 +21,7 @@ interface QuestionRepository : QuestionMapper {
 
     @Select(
         """
-                SELECT id, title, content, step, args, stdout
+                SELECT id, title, description, content, step, args, stdout
                 FROM Question
             """
     )
