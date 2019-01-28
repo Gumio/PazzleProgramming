@@ -16,6 +16,8 @@ class ExecuteController(
 
     data class ExecuteResponse(
         val result: Boolean,
-        val example: Boolean
+        val example: Boolean,
+        val stdout: String,
+        val stderr: String?
     )
 }
