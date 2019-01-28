@@ -1,10 +1,13 @@
 package com.kcg.project.pazpro
 
 import com.github.h0tk3y.betterParse.grammar.parseToEnd
+import com.github.h0tk3y.betterParse.parser.AlternativesFailure
+import com.github.h0tk3y.betterParse.parser.MismatchedToken
+import com.github.h0tk3y.betterParse.parser.ParseException
 import com.kcg.project.pazpro.parsing.*
 
 fun main(args: Array<String>) {
-    TestCase.testFizzBuzz03()
+    TestCase.test04()
 }
 
 object TestCase {
@@ -77,5 +80,28 @@ object TestCase {
 
         val result = RubySyntaxChecker.parseToEnd(testCode)
         println(result)
+    }
+
+    fun test04() {
+        val testCode = """
+            for 1i ..
+        """.trimIndent()
+
+        data class Response(
+            val text: String,
+            val column: Int,
+            val row: Int
+        ) {
+            override fun toString(): String {
+                return "${row}行目${column}列目の${text}付近でエラーが発生。"
+            }
+        }
+
+        try {
+            val result = RubySyntaxChecker.parseToEnd(testCode)
+        } catch (e: ParseException) {
+            val failure = ((e.errorResult as AlternativesFailure).errors[0] as AlternativesFailure).errors[0] as MismatchedToken
+            print(Response(failure.found.text, failure.found.column, failure.found.row))
+        }
     }
 }

@@ -1,5 +1,7 @@
 package com.kcg.project.pazpro.service
 
+import com.github.h0tk3y.betterParse.parser.AlternativesFailure
+import com.github.h0tk3y.betterParse.parser.MismatchedToken
 import com.github.h0tk3y.betterParse.parser.ParseException
 import com.kcg.project.pazpro.controller.ExecuteController
 import com.kcg.project.pazpro.model.Question
@@ -25,10 +27,15 @@ class ExecuteServiceFacade(
             println(question.stdout)
             when (out.trim() == question.stdout) {
                 true -> ExecuteController.ExecuteResponse(true, false, out.trim(), null)
-                false -> ExecuteController.ExecuteResponse(false, false, out.trim(), null)
+                false -> ExecuteController.ExecuteResponse(false, false, out.trim(), "Wrong Answer")
             }
         } catch (e: ParseException) {
-            ExecuteController.ExecuteResponse(false, false, e.toString(), "構文が間違っているようです。")
+            val failure = ((e.errorResult as AlternativesFailure).errors[0] as AlternativesFailure).errors[0] as MismatchedToken
+            ExecuteController.ExecuteResponse(
+                    false,
+                    false,
+                    "${failure.found.row}行目${failure.found.column}列目の${failure.found.text}付近でエラーが発生。",
+                    "構文が間違っているようです。")
         }
     }
 
