@@ -1,10 +1,10 @@
 INSERT INTO Question (title, description, content, step, args, stdout) VALUES (
-    "<チュートリアル01>PUT命令",
-    "PUT命令について学びましょう",
-    "こういう問題内容です",
+    "<チュートリアル01>標準出力",
+    "標準出力について学びましょう",
+    "このパズプロでは、様々な処理をして最終的に想定している文字列が出力されるとクリアとなります。\nそのため「出力を行うための命令」を学ぶ必要があります。\n出力を行う命令はputs命令で、putsのあとに出力したい文字列や数字を指定します。\n試しにHelloWorldと出力してみましょう！",
     1,
-    "args01",
-    "output"
+    "",
+    "HelloWorld"
 );
 
 INSERT INTO Question (title, description, content, step, args, stdout) VALUES (
@@ -191,7 +191,7 @@ INSERT INTO Question (title, description, content, step, args, stdout) VALUES (
     "FIZZBUZZ",
     "FIZZBUZZを出力してみましょう",
     "1-100の数字を順番に出力しましょう。\nただし3の倍数のときはFIZZ、5の倍数のときはBUZZ、3と5公倍数のときはFIZZBUZZと出力されるようにして下さい。",
-    1,
+    8,
     "",
     "1\n2\nFIZZ\n4\nBUZZ\nFIZZ\n7\n8\nFIZZ\nBUZZ\n11\nFIZZ\n13\n14\nFIZZBUZZ\n16\n17\nFIZZ\n19\nBUZZ\nFIZZ\n22\n23\nFIZZ\nBUZZ\n26\nFIZZ\n28\n29\nFIZZBUZZ\n31\n32\nFIZZ\n34\nBUZZ\nFIZZ\n37\n38\nFIZZ\nBUZZ\n41\nFIZZ\n43\n44\nFIZZBUZZ\n46\n47\nFIZZ\n49\nBUZZ\nFIZZ\n52\n53\nFIZZ\nBUZZ\n56\nFIZZ\n58\n59\nFIZZBUZZ\n61\n62\nFIZZ\n64\nBUZZ\nFIZZ\n67\n68\nFIZZ\nBUZZ\n71\nFIZZ\n73\n74\nFIZZBUZZ\n76\n77\nFIZZ\n79\nBUZZ\nFIZZ\n82\n83\nFIZZ\nBUZZ\n86\nFIZZ\n88\n89\nFIZZBUZZ\n91\n92\nFIZZ\n94\nBUZZ\nFIZZ\n97\n98\nFIZZ\nBUZZ"
 );

@@ -4,10 +4,11 @@ import com.github.h0tk3y.betterParse.grammar.parseToEnd
 import com.github.h0tk3y.betterParse.parser.AlternativesFailure
 import com.github.h0tk3y.betterParse.parser.MismatchedToken
 import com.github.h0tk3y.betterParse.parser.ParseException
+import com.kcg.project.pazpro.language.*
 import com.kcg.project.pazpro.parsing.*
 
 fun main(args: Array<String>) {
-    TestCase.test04()
+    TestCase.test05()
 }
 
 object TestCase {
@@ -54,7 +55,7 @@ object TestCase {
     fun testFizzBuzz03() {
         val testCode = """
             for i in 1..30
-                if i%15==0
+                if i % 15==0
                     puts "FizzBuzz!"
                 elsif i%3==0
                     puts "Fizz!"
@@ -79,6 +80,7 @@ object TestCase {
 //                "            end"
 
         val result = RubySyntaxChecker.parseToEnd(testCode)
+
         println(result)
     }
 
@@ -100,8 +102,40 @@ object TestCase {
         try {
             val result = RubySyntaxChecker.parseToEnd(testCode)
         } catch (e: ParseException) {
-            val failure = ((e.errorResult as AlternativesFailure).errors[0] as AlternativesFailure).errors[0] as MismatchedToken
+            val failure = ((e.errorResult as AlternativesFailure).errors.last() as AlternativesFailure).errors.last() as MismatchedToken
             print(Response(failure.found.text, failure.found.column, failure.found.row))
         }
+    }
+
+    fun test05() {
+        val testCode = """
+            for i in 1..100
+                if i % 15 == 0
+                    puts "FIZZBUZZ"
+                elsif i % 3 == 0
+                    puts "FIZZ"
+                elsif i % 5 == 0
+                    puts "BUZZ"
+                else
+                    puts i
+                end
+            end
+        """.trimIndent()
+        val result = RubySyntaxChecker.parseToEnd(testCode)
+        println(result)
+        println(visit(result))
+    }
+
+    fun visit(ast: AST, count: Int = 0): Int = when(ast) {
+        is CompStatement -> {
+            var c = count
+            ast.expressions.forEach { a ->  c = visit(a, c) }
+            c
+        }
+        is IfExpression -> visit(ast.falseBody, visit(ast.trueBody, count + 1))
+        is ForExpression -> visit(ast.body, count + 1)
+        is Put -> count + 1
+        is Literal -> count + 1
+        else -> count + 1
     }
 }

@@ -5,9 +5,9 @@ sealed class AST
 object Skip : AST()
 
 data class CompStatement(val expressions: List<AST>) : AST() {
-    override fun toString(): String {
-        return expressions.joinToString("\n")
-    }
+//    override fun toString(): String {
+//        return expressions.joinToString("\n")
+//    }
 }
 
 data class FunctionDeclaration(val name: String, val parameters: List<AST>) : AST()

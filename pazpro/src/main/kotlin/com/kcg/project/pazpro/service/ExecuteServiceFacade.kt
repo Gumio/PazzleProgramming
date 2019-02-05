@@ -20,13 +20,19 @@ class ExecuteServiceFacade(
         println("code -> $code")
         val question: Question? = questionService.find(id)
         return try {
-            parseService.parsing(code)
+            val parseResult = parseService.parsing(code)
             dockerService.createMainFile(code)
             val out = dockerService.runCode(question!!.args)
             println(out.trim())
             println(question.stdout)
             when (out.trim() == question.stdout) {
-                true -> ExecuteController.ExecuteResponse(true, false, out.trim(), null)
+                true -> {
+                    if (parseService.visit(parseResult) <= question.step) {
+                        ExecuteController.ExecuteResponse(true, true, out.trim(), null)
+                    } else {
+                        ExecuteController.ExecuteResponse(true, false, out.trim(), null)
+                    }
+                }
                 false -> ExecuteController.ExecuteResponse(false, false, out.trim(), "Wrong Answer")
             }
         } catch (e: ParseException) {
